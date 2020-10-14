@@ -1,0 +1,52 @@
+{
+  "name": "langsam",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.20.0",
+    "blem": "^0.0.9",
+    "cors": "^2.8.5",
+    "ensorcel": "^0.0.2",
+    "express": "^4.17.1",
+    "navi": "^0.14.0",
+    "react": "^16.13.1",
+    "react-busy-indicator": "^1.0.0",
+    "react-dom": "^16.13.1",
+    "react-navi": "^0.14.4",
+    "react-scripts": "3.4.3",
+    "torpor": "^0.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "6.6.0",
+    "eslint-config-sorcerers": "^0.0.5",
+    "prettier": "^2.1.2",
+    "prettier-eslint": "^11.0.0",
+    "xtrace": "^0.3.0"
+  },
+  "main": "index.js",
+  "license": "MIT"
+}

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "modified": "Wed Oct 14 2020 07:32:52 GMT+0200 (Central European Summer Time)",
+    "created": "Tue Oct 13 2020 17:18:39 GMT+0200 (Central European Summer Time)"
+  },
+  "data": {
+    "hat": {
+      "title": "Hat",
+      "color": "#d9def4"
+    },
+    "bat": {
+      "title": "Bat",
+      "color": "#f60"
+    },
+    "rat": {
+      "title": "Rat",
+      "color": "#ff0"
+    }
+  }
+}
