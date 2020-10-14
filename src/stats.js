@@ -2,13 +2,13 @@ import React from "react"
 import { mount, route } from "navi"
 import api from "./api"
 
-const Statistics = ({ user }) => (
+const Statistics = ({ drawing }) => (
   <article>
-    <h1>{user.name}</h1>
+    <h1>{drawing.title}</h1>
     <pre>
-    <code>
-    {JSON.stringify(user, null, 2)}
-    </code>
+      <code>
+      {JSON.stringify(drawing, null, 2)}
+      </code>
     </pre>
   </article>
 )
@@ -16,9 +16,8 @@ const Statistics = ({ user }) => (
 export default mount({
   "/:id": route({
     async getView(req) {
-      console.log("uh what", req)
-      const user = await api.fetchDrawing(req.params.id)
-      return <Statistics user={user} />
+      const drawing = await api.fetchDrawing(req.params.id)
+      return <Statistics drawing={drawing} />
     }
   })
 })

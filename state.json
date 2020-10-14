@@ -1,9 +1,9 @@
 {
   "meta": {
-    "modified": "Wed Oct 14 2020 07:32:52 GMT+0200 (Central European Summer Time)",
+    "modified": "Wed Oct 14 2020 10:13:03 GMT+0200 (Central European Summer Time)",
     "created": "Tue Oct 13 2020 17:18:39 GMT+0200 (Central European Summer Time)"
   },
-  "data": {
+  "entities": {
     "hat": {
       "title": "Hat",
       "color": "#d9def4"
