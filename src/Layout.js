@@ -1,15 +1,15 @@
 import BusyIndicator from "react-busy-indicator"
 import React from "react"
 import { Link, NotFoundBoundary, useLoadingRoute } from "react-navi"
-import blem from 'blem'
+import blem from "blem"
 
-const bem = blem('Layout')
+const bem = blem("Layout")
 
 const UnableToRender = () => (
-    <div className={bem('error')}>
-      <h1>404 - Not Found</h1>
-    </div>
-  )
+  <div className={bem("error")}>
+    <h1>404 - Not Found</h1>
+  </div>
+)
 
 function Layout({ children }) {
   const loadingRoute = useLoadingRoute()
@@ -21,12 +21,16 @@ function Layout({ children }) {
           <ul>
             <li>
               <Link href="/">
-                <span role="img" aria-label="drawing">✏️</span>
+                <span role="img" aria-label="drawing">
+                  ✏️
+                </span>
               </Link>
             </li>
             <li>
               <Link href="/stats">
-                <span role="img" aria-label="statistics">📈</span>
+                <span role="img" aria-label="statistics">
+                  📈
+                </span>
               </Link>
             </li>
           </ul>

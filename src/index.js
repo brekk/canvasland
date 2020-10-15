@@ -9,8 +9,12 @@ import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 
 const routes = mount({
-  "/": route({ title: "🏚", getData: () => api.fetchAllDrawings(), view: <Landing /> }),
-  "/stats": lazy(() => import("./stats"))
+  "/": route({
+    title: "🏚",
+    getData: () => api.fetchAllDrawings(),
+    view: <Landing />,
+  }),
+  "/stats": lazy(() => import("./stats")),
 })
 
 ReactDOM.render(

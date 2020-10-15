@@ -6,9 +6,7 @@ const Statistics = ({ drawing }) => (
   <article>
     <h1>{drawing.title}</h1>
     <pre>
-      <code>
-      {JSON.stringify(drawing, null, 2)}
-      </code>
+      <code>{JSON.stringify(drawing, null, 2)}</code>
     </pre>
   </article>
 )
@@ -18,6 +16,6 @@ export default mount({
     async getView(req) {
       const drawing = await api.fetchDrawing(req.params.id)
       return <Statistics drawing={drawing} />
-    }
-  })
+    },
+  }),
 })

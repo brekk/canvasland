@@ -44,6 +44,7 @@
   "devDependencies": {
     "eslint": "6.6.0",
     "eslint-config-sorcerers": "^0.0.5",
+    "eslint-plugin-react": "^7.21.4",
     "prettier": "^2.1.2",
     "prettier-eslint": "^11.0.0",
     "xtrace": "^0.3.0"
