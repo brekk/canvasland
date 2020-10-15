@@ -12,6 +12,7 @@
     "ensorcel": "^0.0.2",
     "express": "^4.17.1",
     "navi": "^0.14.0",
+    "raf": "^3.4.1",
     "react": "^16.13.1",
     "react-busy-indicator": "^1.0.0",
     "react-dom": "^16.13.1",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "eslint": "6.6.0",
     "eslint-config-sorcerers": "^0.0.5",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
     "prettier": "^2.1.2",
     "prettier-eslint": "^11.0.0",
