@@ -13,8 +13,7 @@ const Landing = () => {
   const canvasRef = useRef()
   const [x, setX] = useState(-1)
   const [y, setY] = useState(-1)
-  const [points, setPoints] = useState([
-  ])
+  const [points, setPoints] = useState([])
   const [activePoints, setActivePoints] = useState(points)
   const [pressing, setPressing] = useState(false)
   const [frameId, setFrameId] = useState(-1)
@@ -26,27 +25,19 @@ const Landing = () => {
   )()
   const onMouseMove = e => {
     if (canvasRef.current && pressing) {
-      console.log("ref", canvasRef.current)
       const current = canvasRef.current
       const {clientWidth: w, clientHeight: h, offsetLeft: l, offsetTop: t} = current
       const rect = current.getBoundingClientRect()
-      console.log("wrecked", rect)
       const point = {
         x: e.nativeEvent.offsetX,
         y: e.nativeEvent.offsetY
       }
-      console.log("W", w, "H", h, "L", l, "T", t, "POINT", point)
-      if (point.x && point.y) {
-        console.log("point!", point)
-        // this is a fun permutation
-        // if (distance({x,y}, point) > 100) {
-        if (x && y && Math.abs(x - point.x) > 20 && Math.abs(y - point.y) > 20){
+      if (point.x && point.y && point.x !== x && point.y !== y) {
           setX(point.x)
           setY(point.y)
-          setActivePoints(activePoints.concat([
+          setPoints(points.concat([
             point 
           ]))
-        }
       }
     }
   }
@@ -64,8 +55,9 @@ const Landing = () => {
       setPressing(false)
       setX(-1)
       setY(-1)
-      setPoints(points.concat(activePoints))
-      setActivePoints([])
+      // setPoints(points.concat(activePoints))
+      // setActivePoints([])
+      setPoints([])
     }
   }
   useEffect(() => {
@@ -75,13 +67,12 @@ const Landing = () => {
       ctx.strokeStyle = 'red'
       const first = head(points)
       if (first) {
-        ctx.beginPath()
-        // ctx.moveTo(first.x, first.y)
         const rest = tail(points)
         if (rest.length) {
+          ctx.beginPath()
           rest.forEach((zz, i) => {
             const yy = rest[i - 1]
-            if (yy) {
+            if (yy && distance(yy, zz) < 50) {
               ctx.moveTo(yy.x, yy.y)
             }
             ctx.lineTo(zz.x, zz.y)
