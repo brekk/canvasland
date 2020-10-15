@@ -11,12 +11,14 @@ const distance = (aa, bb) => Math.sqrt(
 
 const Landing = () => {
   const canvasRef = useRef()
-  const [x, setX] = useState(-1)
-  const [y, setY] = useState(-1)
-  const [points, setPoints] = useState([])
-  const [activePoints, setActivePoints] = useState(points)
-  const [pressing, setPressing] = useState(false)
-  const [frameId, setFrameId] = useState(-1)
+  const [$x, setX] = useState(-1)
+  const [$y, setY] = useState(-1)
+  const [$lastPress, setLastPress] = useState(Date.now() - 1000)
+  const [$color, setColor] = useState('#000000')
+  const [$stroke, setStroke] = useState(4)
+  const [$points, setPoints] = useState([])
+  const [$pressing, setPressing] = useState(false)
+  const [$frameId, setFrameId] = useState(-1)
   // useCurrentRoute returns the lastest loaded Route object
   const drawings = pipe(
     useCurrentRoute,
@@ -24,18 +26,17 @@ const Landing = () => {
     values
   )()
   const onMouseMove = e => {
-    if (canvasRef.current && pressing) {
+    if (canvasRef.current && $pressing) {
       const current = canvasRef.current
       const {clientWidth: w, clientHeight: h, offsetLeft: l, offsetTop: t} = current
-      const rect = current.getBoundingClientRect()
       const point = {
         x: e.nativeEvent.offsetX,
         y: e.nativeEvent.offsetY
       }
-      if (point.x && point.y && point.x !== x && point.y !== y) {
+      if (point.x && point.y && point.x !== $x && point.y !== $y) {
           setX(point.x)
           setY(point.y)
-          setPoints(points.concat([
+          setPoints($points.concat([
             point 
           ]))
       }
@@ -51,38 +52,39 @@ const Landing = () => {
   const onMouseUp = e => {
     e.preventDefault()
     if (canvasRef.current) {
-      console.log('up', {x, y}, "chunk!", activePoints.length, 'points', points.length)
       setPressing(false)
       setX(-1)
       setY(-1)
-      // setPoints(points.concat(activePoints))
-      // setActivePoints([])
       setPoints([])
+      setLastPress(Date.now())
     }
   }
   useEffect(() => {
-    if (canvasRef.current && points.length) {
+    if (canvasRef.current && $points.length) {
       const ctx = canvasRef.current.getContext('2d')
-      ctx.lineWidth = 2
-      ctx.strokeStyle = 'red'
-      const first = head(points)
-      if (first) {
-        const rest = tail(points)
-        if (rest.length) {
+      ctx.lineWidth = $stroke
+      ctx.lineCap = "round"
+      ctx.lineJoin = "round"
+      ctx.strokeStyle = $color
+      // const first = head($points)
+      // const rest = tail($points)
+      // if (rest.length) {
+        $points.forEach((zz, i) => {
+          const yy = $points[i - 1]
           ctx.beginPath()
-          rest.forEach((zz, i) => {
-            const yy = rest[i - 1]
-            if (yy && distance(yy, zz) < 50) {
-              ctx.moveTo(yy.x, yy.y)
+          if (yy) {
+            const timeLapsed = Math.round(Math.abs($lastPress - Date.now()) / 1000)
+            if (timeLapsed > 1 || distance(yy, zz) < 40) {
+              ctx.moveTo(yy.x, yy.y) 
             }
-            ctx.lineTo(zz.x, zz.y)
-            ctx.stroke()
-          })
-        }
-      }
+          }
+          ctx.lineTo(zz.x, zz.y)
+          ctx.stroke()
+        })
+      // }
     }
     return () => {}
-  }, [pressing, activePoints, points, canvasRef])
+  }, [$pressing, $points, canvasRef])
   return (
     <>
     <ul>
@@ -94,13 +96,27 @@ const Landing = () => {
         </li>
       ))}
     </ul>
-    <canvas height="600" width="800" ref={canvasRef} style={{
-      // width: '100%',
-      // height: '100%',
-      display: 'block',
-      border: '1px solid black',
-      margin: '1rem'
-    }} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} onMouseOut={onMouseUp}/>
+    <form>
+    <input type="range" min="1" max="50" value={$stroke} onChange={e => {
+      e.preventDefault()
+      setStroke(e.target.value)
+    }}/>
+    <input type="color" value={$color} onChange={e => {
+      e.preventDefault()
+      setColor(e.target.value)
+    }}/>
+    </form>
+    <canvas height="600" width="800" ref={canvasRef}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseOut={onMouseUp}
+      style={{
+        display: 'block',
+        border: '1px solid black',
+        margin: '1rem'
+      }}
+    />
     </>
   )
 }
