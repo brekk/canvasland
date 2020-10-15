@@ -5,7 +5,7 @@ import ReactDOM from "react-dom"
 import api from "./api"
 import Layout from "./Layout"
 import Landing from "./Landing"
-import "./index.css"
+import "./App.css"
 import * as serviceWorker from "./serviceWorker"
 
 const routes = mount({

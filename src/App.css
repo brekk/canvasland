@@ -1,38 +1,94 @@
+html, body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  background-color: #ccc;
+}
+.ControlPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: space-around;
+  width: 100vw;
+  height: 6rem;
+  background-color: #aaa;
+  position: fixed;
+  bottom: 0;
+}
+.ControlPanel__label {
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+.ControlPanel__field {
+  display: flex;
+  width: 33%;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: center;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-right: 1px solid rgba(0,0,0,0.3);
+}
+.ControlPanel__field:first-of-type {
+  border-left: 0;
+}
+.ControlPanel__field:last-of-type {
+  border-right: 0;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-content: center;
 }
 
-.App-link {
-  color: #61dafb;
+.App__canvas {
+  margin: auto;
+  margin-top: 10vh;
+  background-color: #888;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Layout__nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 4rem;
+  background-color: #aaa;
+  box-shadow: 0 5px 6px rgba(0,0,0,0.6);
+}
+.Layout__nav-list {
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 10rem;
+  background-color: #333;
+  max-width: 5rem;
+  height: 2rem;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+.Layout__nav-item {
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0.25rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  border-radius: 10rem;
+  background-color: #666;
+}
+.Layout__nav-link {
+  text-decoration: none;
+}
+.Layout__nav-item--active {
+  background-color: #0cf;
 }

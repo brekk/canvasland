@@ -13,22 +13,29 @@ const UnableToRender = () => (
 
 function Layout({ children }) {
   const loadingRoute = useLoadingRoute()
+  const pathname = window ? window.location.pathname : ''
+  const link = (x, p) => bem(x, pathname === p ? 'active' : 'inactive')
   return (
     <div className={bem()}>
       <BusyIndicator isBusy={!!loadingRoute} delayMs={200} />
       <header className={bem("header")}>
         <nav className={bem("nav")}>
-          <ul>
-            <li>
-              <Link href="/">
-                <span role="img" aria-label="drawing">
+          <ul className={bem('nav-list')}>
+            <li className={link('nav-item', '/')}>
+              <Link href="/" className={link('nav-link', '/')}>
+                <span role="img" aria-label="drawing"
+                className={bem('icon')}
+                >
                   ✏️
                 </span>
               </Link>
             </li>
-            <li>
-              <Link href="/stats">
-                <span role="img" aria-label="statistics">
+            <li className={link('nav-item', '/stats')}>
+              <Link href="/stats" className={link('nav-link', '/stats')}>
+                <span role="img" aria-label="statistics"
+
+                className={bem('icon')}
+                >
                   📈
                 </span>
               </Link>
@@ -36,7 +43,7 @@ function Layout({ children }) {
           </ul>
         </nav>
       </header>
-      <main>
+      <main className={bem('main')}>
         <NotFoundBoundary render={UnableToRender}>{children}</NotFoundBoundary>
       </main>
     </div>
