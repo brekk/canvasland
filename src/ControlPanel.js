@@ -58,7 +58,11 @@ const ControlPanel = ({
     </div>
     <button onClick={(e) => {
       e.preventDefault()
-      api.saveDrawing({cool: true})
+      const points = JSON.parse(window.localStorage.getItem('points'))
+      console.log('points', points)
+      if (points && points.length) {
+        api.saveDrawing({points})
+      }
     }}>Save</button>
   </form>
 )

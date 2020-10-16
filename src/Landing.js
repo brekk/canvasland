@@ -31,6 +31,18 @@ const bem = blem("App")
   </ul>
   */
 
+const updateLocal = (key, what) => {
+  if (!window) return
+  const payload = what && typeof what === 'object' ? JSON.stringify(what) : what 
+  const existing = window.localStorage.getItem(key)
+  const extant = existing && JSON.parse(existing)
+  if (extant.length > 0) {
+    const newPayload = JSON.stringify(extant.concat(what))
+    window.localStorage.setItem(key, newPayload)
+  } else {
+    window.localStorage.setItem(key, payload)
+  }
+}
 const Landing = () => {
   // by convention we use a $ prefix for state related values
   const [$color, setColor] = useState(randomColor())
@@ -46,7 +58,7 @@ const Landing = () => {
   const makePointFromEvent = (e, time) => ({
     x: e.nativeEvent.offsetX,
     y: e.nativeEvent.offsetY,
-    time,
+    time
   })
   const controlProps = {
     color: $color,
@@ -72,6 +84,7 @@ const Landing = () => {
   const onMouseUp = (e) => {
     e.preventDefault()
     setPressing(false)
+    updateLocal('points', $points)
     setPoints([])
     setLastPress(Date.now())
   }
@@ -81,7 +94,6 @@ const Landing = () => {
       ctx.lineCap = "round"
       ctx.lineJoin = "round"
       ctx.strokeStyle = toRGBA($color, $opacity)
-      console.log($color, "@#>>@>@", ctx.strokeStyle)
       ctx.beginPath()
       $points.forEach((yy, i) => {
         ctx.moveTo(yy.x, yy.y)
@@ -94,6 +106,9 @@ const Landing = () => {
       ctx.stroke()
     }
   }
+  useEffect(() => {
+    window.localStorage.setItem('points', [])
+  }, [])
 
   return (
     <div className={bem()}>
