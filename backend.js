@@ -35,6 +35,7 @@ const onLoad = () => {
 
 const server = app.listen(CONFIG.BACKEND.PORT, onLoad)
 const j2 = (x) => JSON.stringify(x, null, 2)
+const j0 = (x) => JSON.stringify(x)
 
 const onUnload = () => {
   const oldThoughts = T.readFile(PATHS.BRAIN)
@@ -83,16 +84,17 @@ app.get("/", (req, res, next) => {
     fork(next)((x) => res.json(x))
   )(require("./backend-data"))
 })
+const slugify = x => x.toLowerCase().replace(/\W/g, '-')
 app.post("/", (req, res, next) => {
   const {points, name} = req.body
   pipe(
-    j2,
-    T.writeFile(`./${name}.json`, __, "utf8"),
+    j0,
+    T.writeFile(`./${slugify(name)}.json`, __, "utf8"),
     fork(next)(() => res.json({saved: true}))
   )({
     points,
     meta: {
-      modified: (Date.now()).toString(),
+      modified: (new Date()).toString(),
     }
   })
 })

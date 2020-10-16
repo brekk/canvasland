@@ -58,7 +58,8 @@ const Landing = () => {
   const makePointFromEvent = (e, time) => ({
     x: e.nativeEvent.offsetX,
     y: e.nativeEvent.offsetY,
-    time
+    time,
+    offset: Math.abs(time - Date.now())
   })
   const controlProps = {
     color: $color,

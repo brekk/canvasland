@@ -58,7 +58,7 @@ const ControlPanel = ({
     </div>
     <button onClick={(e) => {
       e.preventDefault()
-      const name = window.prompt("Name of project?", "Save")
+      const name = window.prompt("Name of project?", "My Project")
       if (name) {
         const points = JSON.parse(window.localStorage.getItem('points'))
         console.log('points', points)
