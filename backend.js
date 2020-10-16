@@ -83,10 +83,17 @@ app.get("/", (req, res, next) => {
     fork(next)((x) => res.json(x))
   )(require("./backend-data"))
 })
-app.post("/", (req, res) => {
-  console.log(req, "<>", req.body)
-  res.json({
-    text: "Simple CORS requests are working. [POST]",
+app.post("/", (req, res, next) => {
+  const {points, name} = req.body
+  pipe(
+    j2,
+    T.writeFile(`./${name}.json`, __, "utf8"),
+    fork(next)(() => res.json({saved: true}))
+  )({
+    points,
+    meta: {
+      modified: (Date.now()).toString(),
+    }
   })
 })
 

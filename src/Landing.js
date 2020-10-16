@@ -71,19 +71,20 @@ const Landing = () => {
   const onMouseMove = (e) => {
     e.preventDefault()
     if ($pressing) {
-      const point = makePointFromEvent(e)
-      addPoint(point, $lastPress)
+      const point = makePointFromEvent(e, $lastPress)
+      addPoint(point)
     }
   }
   const onMouseDown = (e) => {
     e.preventDefault()
     setPressing(true)
-    const point = makePointFromEvent(e)
-    addPoint(point, $lastPress)
+    const point = makePointFromEvent(e, $lastPress)
+    addPoint(point)
   }
   const onMouseUp = (e) => {
     e.preventDefault()
     setPressing(false)
+    // offload drawn points to localStorage
     updateLocal('points', $points)
     setPoints([])
     setLastPress(Date.now())
