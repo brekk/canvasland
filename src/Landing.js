@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react"
 import {
+last,
+propOr,
+map,
   identity,
   memoizeWith,
   uniqBy,
   find,
   pipe,
+  toPairs,
+  sortBy,
+  groupBy,
   pathOr,
   values,
   toLower,
@@ -44,6 +50,7 @@ const updateLocal = (key, what) => {
     window.localStorage.setItem(key, payload)
   }
 }
+const mParseInt = memoizeWith(x => x)(parseInt)
 const Landing = () => {
   const rawPoints = pipe(useCurrentRoute, pathOr({}, ["data"]), values)()
   // by convention we use a $ prefix for state related values
@@ -52,18 +59,20 @@ const Landing = () => {
   const [$opacity, setOpacity] = useState(100)
   const [$lastPress, setLastPress] = useState(Date.now() - 1000)
   const [$points, setRawPoints] = useState(rawPoints)
+  const [$allPoints, setAllPoints] = useState($points)
   const [$lastGesture, setLastGesture] = useState([])
   const [$pressing, setPressing] = useState(false)
   const [$context, setContext] = useState(false)
   const setPoints = throttle(20, setRawPoints)
   const addPoint = (point) => {
     setPoints($points.concat(point))
+    setAllPoints($allPoints.concat(point))
   }
-  const makePointFromEvent = (e, time) => ({
+  const makePointFromEvent = (e) => ({
     x: e.nativeEvent.offsetX,
     y: e.nativeEvent.offsetY,
-    time,
-    offset: Math.abs(time - Date.now()),
+    time: $lastPress,
+    offset: Math.abs($lastPress - Date.now()),
     stroke: $stroke,
     color: $color,
     opacity: $opacity,
@@ -78,32 +87,37 @@ const Landing = () => {
     context: $context,
     lastGesture: $lastGesture,
     lastPress: $lastPress,
-    points: $points,
-    setPoints
+    allPoints: $allPoints,
+    setAllPoints
   }
   const onMouseMove = (e) => {
     e.preventDefault()
     if ($pressing) {
-      const point = makePointFromEvent(e, $lastPress)
+      const point = makePointFromEvent(e)
       addPoint(point)
     }
   }
   const onMouseDown = (e) => {
     e.preventDefault()
     setPressing(true)
-    const point = makePointFromEvent(e, $lastPress)
+    setLastPress(Date.now())
+    const point = makePointFromEvent(e)
     addPoint(point)
   }
   const onMouseUp = (e) => {
     e.preventDefault()
     // offload drawn points to localStorage
     updateLocal("points", $points)
-    const remaining = $points.filter(({time}) => time < $lastPress)
-    console.log('remaining', remaining.length)
-    setLastGesture(remaining)
+    console.log('points', $points.length)
+const lastGestureFromAllPoints = pipe(
+      groupBy(propOr(-1, 'time')),
+      toPairs,
+      last,
+      propOr([], 1)
+    )
+    setLastGesture(lastGestureFromAllPoints($allPoints))
     setPressing(false)
     setPoints([])
-    setLastPress(Date.now())
   }
   const draw = (ctx) => {
     if ($context !== ctx) {

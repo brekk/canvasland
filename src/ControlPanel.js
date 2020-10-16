@@ -35,7 +35,6 @@ const ControlPanel = ({
         }
         if (yy.color && yy.color !== $color) {
           ctx.strokeStyle = toRGBA(yy.color, yy.opacity || $opacity)
-          console.log("change color?", ctx.strokeStyle)
         }
         if (yy.stroke && yy.stroke !== $stroke) {
           ctx.lineWidth = yy.stroke
@@ -45,7 +44,7 @@ const ControlPanel = ({
         }
         ctx.moveTo(yy.x, yy.y)
         ctx.lineTo(yy.x, yy.y)
-        const zz = $points[i + 1]
+        const zz = points[i + 1]
         if (zz && Math.abs(zz.time - yy.time) < 500) {
           ctx.lineTo(zz.x, zz.y)
         }
@@ -103,7 +102,7 @@ return(
         console.log("RAWR", $lastGesture)
         if ($lastGesture.length) {
             draw($context, $lastGesture, {color: '#888'})
-            setPoints($points.filter(({time}) => time < $lastPress))
+            // setPoints($points.filter(({time}) => time < $lastPress))
         }
       }}>Undo</button>
       <button className={bem('button', 'reset')} onClick={e => {
