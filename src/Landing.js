@@ -9,6 +9,7 @@ import {
   values,
   toLower,
 } from "ramda"
+import {trace} from 'xtrace'
 import { Link, useCurrentRoute } from "react-navi"
 import { throttle } from "throttle-debounce"
 import blem from "blem"
@@ -44,12 +45,14 @@ const updateLocal = (key, what) => {
   }
 }
 const Landing = () => {
+  const rawPoints = pipe(useCurrentRoute, pathOr({}, ["data"]), values)()
+  console.log('rawPoints', rawPoints)
   // by convention we use a $ prefix for state related values
   const [$color, setColor] = useState(randomColor())
-  const [$stroke, setStroke] = useState(Math.round(Math.random() * 100))
+  const [$stroke, setStroke] = useState(35)
   const [$opacity, setOpacity] = useState(100)
   const [$lastPress, setLastPress] = useState(Date.now() - 1000)
-  const [$points, setRawPoints] = useState([])
+  const [$points, setRawPoints] = useState(rawPoints)
   const [$pressing, setPressing] = useState(false)
   const setPoints = throttle(20, setRawPoints)
   const addPoint = (point) => {
@@ -101,7 +104,7 @@ const Landing = () => {
         ctx.moveTo(yy.x, yy.y)
         ctx.lineTo(yy.x, yy.y)
         const zz = $points[i + 1]
-        if (zz) {
+        if (zz && Math.abs(zz.time - yy.time) < 500) {
           ctx.lineTo(zz.x, zz.y)
         }
       })

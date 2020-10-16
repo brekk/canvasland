@@ -1,4 +1,4 @@
-import { objOf, values, pathOr, map, pipe, curry, merge } from "ramda"
+import { defaultTo, objOf, values, pathOr, map, pipe, curry, merge } from "ramda"
 import { NotFoundError } from "navi"
 import * as E from "ensorcel/ensorcel.js"
 import { trace } from "xtrace"
@@ -22,14 +22,13 @@ export default {
       objOf("data"),
       api,
       snag(() => NotFoundError),
-      then(pipe(pathOr([], ["data", "entities", id]), defaultify))
+      then(pipe(pathOr([], ["data", "points", id]), defaultify))
     )(id),
   fetchAllDrawings: pipe(
-    objOf("id"),
-    objOf("data"),
+    defaultTo({}),
     api,
     snag(() => NotFoundError),
-    then(pipe(pathOr([], ["data", "entities"]), map(defaultify), values))
+    then(pipe(pathOr([], ["data", "points"])))
   ),
   saveDrawing: data => pipe(
     api,
