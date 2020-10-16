@@ -1,3 +1,3 @@
-const {readFile} = require('torpor')
+const { readFile } = require("torpor")
 
-module.exports = readFile('./state.json', 'utf8')
+module.exports = readFile("./state.json", "utf8")

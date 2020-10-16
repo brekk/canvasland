@@ -15,7 +15,6 @@ import blem from "blem"
 import Canvas from "./Canvas"
 import ControlPanel from "./ControlPanel"
 import { toRGBA, randomColor } from "./utils"
-import { useConfiguration } from "./useConfiguration"
 
 const bem = blem("App")
 
@@ -35,8 +34,8 @@ const bem = blem("App")
 const Landing = () => {
   // by convention we use a $ prefix for state related values
   const [$color, setColor] = useState(randomColor())
-    const [$stroke, setStroke] = useState(Math.round(Math.random() * 100))
-      const [$opacity, setOpacity] = useState(100)
+  const [$stroke, setStroke] = useState(Math.round(Math.random() * 100))
+  const [$opacity, setOpacity] = useState(100)
   const [$lastPress, setLastPress] = useState(Date.now() - 1000)
   const [$points, setRawPoints] = useState([])
   const [$pressing, setPressing] = useState(false)
@@ -50,13 +49,13 @@ const Landing = () => {
     time,
   })
   const controlProps = {
-      color: $color,
-          opacity: $opacity,
-              stroke: $stroke,
-                  setColor: setColor,
-                      setOpacity: setOpacity,
-                          setStroke: setStroke,
-                            }
+    color: $color,
+    opacity: $opacity,
+    stroke: $stroke,
+    setColor: setColor,
+    setOpacity: setOpacity,
+    setStroke: setStroke,
+  }
   const onMouseMove = (e) => {
     e.preventDefault()
     if ($pressing) {
@@ -108,7 +107,7 @@ const Landing = () => {
         onMouseOut={onMouseUp}
         draw={draw}
       />
-      <ControlPanel {...controlProps}/>
+      <ControlPanel {...controlProps} />
     </div>
   )
 }

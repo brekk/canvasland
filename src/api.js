@@ -6,7 +6,7 @@ import axios from "axios"
 const config = require("./config")
 
 const BACKEND = "http://" + config.BACKEND.DOMAIN + ":" + config.BACKEND.PORT
-const api = pipe(merge({ url: BACKEND, method: "get" }), axios)
+const api = pipe(merge({ url: BACKEND, method: "get" }), trace('what up'), axios)
 
 const defaultify = pipe(
   merge({ title: "Untitled", points: [], color: "#888", opacity: 1 })
@@ -31,4 +31,9 @@ export default {
     snag(() => NotFoundError),
     then(pipe(pathOr([], ["data", "entities"]), map(defaultify), values))
   ),
+  saveDrawing: data => pipe(
+    api,
+    snag(() => NotFoundError),
+    then(console.log)
+  )({method: 'POST', data})
 }
