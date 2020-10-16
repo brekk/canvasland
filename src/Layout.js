@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { Link, NotFoundBoundary, useLoadingRoute } from "react-navi"
 import blem from "blem"
 import ControlPanel from "./ControlPanel"
+import api from "./api"
 
 const bem = blem("Layout")
 
@@ -48,6 +49,25 @@ function Layout({ children }) {
               </Link>
             </li>
           </ul>
+          <div className={bem("nav-actions")}>
+            <button
+              className={bem("button", "save")}
+              onClick={(e) => {
+                e.preventDefault()
+                const name = window.prompt("Name of project?", "My Project")
+                if (name) {
+                  const points = JSON.parse(
+                    window.localStorage.getItem("points")
+                  )
+                  if (points && points.length) {
+                    api.saveDrawing({ name, points })
+                  }
+                }
+              }}
+            >
+              Save
+            </button>
+          </div>
         </nav>
       </header>
       <main className={bem("main")}>

@@ -16,8 +16,10 @@ app.use(
   })
 )
 app.use(
-  bodyParser.json()
+  bodyParser.json({limit: '50mb', type: 'application/json'})
 )
+
+// app.use(express.bodyParser({limit: '50mb'}))
 
 const here = (x) => path.resolve(__dirname, x)
 const PATHS = map(here, CONFIG.STORAGE)

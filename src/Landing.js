@@ -9,7 +9,7 @@ import {
   values,
   toLower,
 } from "ramda"
-import {trace} from 'xtrace'
+import { trace } from "xtrace"
 import { Link, useCurrentRoute } from "react-navi"
 import { throttle } from "throttle-debounce"
 import blem from "blem"
@@ -34,7 +34,7 @@ const bem = blem("App")
 
 const updateLocal = (key, what) => {
   if (!window) return
-  const payload = what && typeof what === 'object' ? JSON.stringify(what) : what 
+  const payload = what && typeof what === "object" ? JSON.stringify(what) : what
   const existing = window.localStorage.getItem(key)
   const extant = existing && JSON.parse(existing)
   if (extant.length > 0) {
@@ -46,14 +46,15 @@ const updateLocal = (key, what) => {
 }
 const Landing = () => {
   const rawPoints = pipe(useCurrentRoute, pathOr({}, ["data"]), values)()
-  console.log('rawPoints', rawPoints)
   // by convention we use a $ prefix for state related values
   const [$color, setColor] = useState(randomColor())
   const [$stroke, setStroke] = useState(35)
   const [$opacity, setOpacity] = useState(100)
   const [$lastPress, setLastPress] = useState(Date.now() - 1000)
   const [$points, setRawPoints] = useState(rawPoints)
+  const [$lastGesture, setLastGesture] = useState([])
   const [$pressing, setPressing] = useState(false)
+  const [$context, setContext] = useState(false)
   const setPoints = throttle(20, setRawPoints)
   const addPoint = (point) => {
     setPoints($points.concat(point))
@@ -62,7 +63,10 @@ const Landing = () => {
     x: e.nativeEvent.offsetX,
     y: e.nativeEvent.offsetY,
     time,
-    offset: Math.abs(time - Date.now())
+    offset: Math.abs(time - Date.now()),
+    stroke: $stroke,
+    color: $color,
+    opacity: $opacity,
   })
   const controlProps = {
     color: $color,
@@ -71,6 +75,11 @@ const Landing = () => {
     setColor: setColor,
     setOpacity: setOpacity,
     setStroke: setStroke,
+    context: $context,
+    lastGesture: $lastGesture,
+    lastPress: $lastPress,
+    points: $points,
+    setPoints
   }
   const onMouseMove = (e) => {
     e.preventDefault()
@@ -87,13 +96,19 @@ const Landing = () => {
   }
   const onMouseUp = (e) => {
     e.preventDefault()
-    setPressing(false)
     // offload drawn points to localStorage
-    updateLocal('points', $points)
+    updateLocal("points", $points)
+    const remaining = $points.filter(({time}) => time < $lastPress)
+    console.log('remaining', remaining.length)
+    setLastGesture(remaining)
+    setPressing(false)
     setPoints([])
     setLastPress(Date.now())
   }
   const draw = (ctx) => {
+    if ($context !== ctx) {
+      setContext(ctx)
+    }
     if ($points.length) {
       ctx.lineWidth = $stroke
       ctx.lineCap = "round"
@@ -101,6 +116,19 @@ const Landing = () => {
       ctx.strokeStyle = toRGBA($color, $opacity)
       ctx.beginPath()
       $points.forEach((yy, i) => {
+        if (yy.color || yy.stroke || yy.opacity) {
+          ctx.stroke()
+          ctx.closePath()
+        }
+        if (yy.color && yy.color !== $color && toRGBA(yy.color, yy.opacity) !== $color) {
+          ctx.strokeStyle = toRGBA(yy.color, yy.opacity || $opacity)
+        }
+        if (yy.stroke && yy.stroke !== $stroke) {
+          ctx.lineWidth = yy.stroke
+        }
+        if (yy.color || yy.stroke || yy.opacity) {
+          ctx.beginPath()
+        }
         ctx.moveTo(yy.x, yy.y)
         ctx.lineTo(yy.x, yy.y)
         const zz = $points[i + 1]
@@ -112,7 +140,7 @@ const Landing = () => {
     }
   }
   useEffect(() => {
-    window.localStorage.setItem('points', [])
+    window.localStorage.setItem("points", [])
   }, [])
 
   return (
