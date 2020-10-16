@@ -10,9 +10,10 @@ html, body {
   flex-direction: row;
   justify-content: center;
   align-content: space-around;
-  width: 100vw;
-  height: 6rem;
   background-color: #aaa;
+  width: 100vw;
+  height: 4rem;
+  /* width: calc(100vw - 7rem); */
   position: fixed;
   bottom: 0;
 }
@@ -57,6 +58,8 @@ html, body {
   height: 4rem;
   background-color: #aaa;
   box-shadow: 0 5px 6px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: row;
 }
 .Layout__nav-list {
   display: flex;
